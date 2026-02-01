@@ -1,18 +1,30 @@
 [
   {
-    "id": "20260129213347",
-    "subject": "NPTEL",
-    "exam_date": "2026-01-31",
-    "daily_hours": 2.0,
-    "total_units": 4,
-    "created_at": "2026-01-29"
+    "name": "Mathematics Final Exam",
+    "date": "2026-02-06",
+    "subject": "Mathematics",
+    "priority": "high",
+    "added": "2026-02-01 23:52"
   },
   {
-    "id": "20260129214315",
+    "name": "Physics Midterm",
+    "date": "2026-02-13",
+    "subject": "Physics",
+    "priority": "medium",
+    "added": "2026-02-01 23:52"
+  },
+  {
+    "name": "Chemistry Lab Test",
+    "date": "2026-02-21",
+    "subject": "Chemistry",
+    "priority": "low",
+    "added": "2026-02-01 23:52"
+  },
+  {
+    "name": "Sem 3",
+    "date": "2026-02-26",
     "subject": "DSP",
-    "exam_date": "2026-02-01",
-    "daily_hours": 2.0,
-    "total_units": 5,
-    "created_at": "2026-01-29"
+    "priority": "low",
+    "added": "2026-02-01 23:58"
   }
 ]

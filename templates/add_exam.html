@@ -1,0 +1,270 @@
+﻿{% extends "base.html" %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-8">
+        <!-- Back Button -->
+        <div class="mb-3">
+            <a href="/" class="btn btn-outline-secondary">
+                <i class="bi bi-arrow-left"></i> Back to Dashboard
+            </a>
+        </div>
+
+        <!-- Add Exam Card -->
+        <div class="card border-primary">
+            <div class="card-header bg-primary bg-opacity-25 border-primary d-flex justify-content-between align-items-center">
+                <h4 class="mb-0">
+                    <i class="bi bi-plus-circle text-primary"></i> Add New Exam
+                </h4>
+                <span class="badge bg-primary">Feature 1 of 5</span>
+            </div>
+            
+            <div class="card-body">
+                <p class="text-muted mb-4">Add exams to your timetable. All data is saved in <code>data/exams.json</code> (shared with CLI version).</p>
+                
+                <form method="POST" action="/add_exam" class="needs-validation" novalidate>
+                    <!-- Exam Name -->
+                    <div class="mb-4">
+                        <label for="examName" class="form-label fw-bold">
+                            <i class="bi bi-card-heading text-primary"></i> Exam Name *
+                        </label>
+                        <input type="text" 
+                               class="form-control form-control-lg" 
+                               id="examName" 
+                               name="name" 
+                               placeholder="e.g., Final Mathematics Examination"
+                               required
+                               autofocus>
+                        <div class="form-text">
+                            Enter a descriptive name for your exam
+                        </div>
+                        <div class="invalid-feedback">
+                            Please enter an exam name.
+                        </div>
+                    </div>
+                    
+                    <!-- Subject -->
+                    <div class="mb-4">
+                        <label for="subject" class="form-label fw-bold">
+                            <i class="bi bi-book text-primary"></i> Subject *
+                        </label>
+                        <input type="text" 
+                               class="form-control form-control-lg" 
+                               id="subject" 
+                               name="subject" 
+                               placeholder="e.g., Mathematics, Physics, Chemistry"
+                               required>
+                        <div class="form-text">
+                            Subject or course name
+                        </div>
+                        <div class="invalid-feedback">
+                            Please enter a subject name.
+                        </div>
+                    </div>
+                    
+                    <!-- Exam Date -->
+                    <div class="mb-4">
+                        <label for="examDate" class="form-label fw-bold">
+                            <i class="bi bi-calendar-date text-primary"></i> Exam Date *
+                        </label>
+                        <input type="date" 
+                               class="form-control form-control-lg" 
+                               id="examDate" 
+                               name="date" 
+                               required>
+                        <div class="form-text">
+                            Select the exam date
+                        </div>
+                        <div class="invalid-feedback">
+                            Please select an exam date.
+                        </div>
+                    </div>
+                    
+                    <!-- Priority -->
+                    <div class="mb-4">
+                        <label class="form-label fw-bold">
+                            <i class="bi bi-flag text-primary"></i> Priority Level
+                        </label>
+                        <div class="row g-3">
+                            <div class="col-md-4">
+                                <div class="card bg-dark border-danger priority-card" onclick="selectPriority('high')" data-priority="high">
+                                    <div class="card-body text-center">
+                                        <i class="bi bi-flag-fill text-danger display-6"></i>
+                                        <h5 class="mt-2">High</h5>
+                                        <small class="text-muted">Due within 7 days</small>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="card bg-dark border-warning priority-card active" onclick="selectPriority('medium')" data-priority="medium">
+                                    <div class="card-body text-center">
+                                        <i class="bi bi-flag-fill text-warning display-6"></i>
+                                        <h5 class="mt-2">Medium</h5>
+                                        <small class="text-muted">Due within 14 days</small>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="card bg-dark border-success priority-card" onclick="selectPriority('low')" data-priority="low">
+                                    <div class="card-body text-center">
+                                        <i class="bi bi-flag-fill text-success display-6"></i>
+                                        <h5 class="mt-2">Low</h5>
+                                        <small class="text-muted">More than 14 days</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <input type="hidden" name="priority" id="priority" value="medium">
+                    </div>
+                    
+                    <!-- Submit Buttons -->
+                    <div class="d-flex justify-content-between mt-4 pt-3 border-top">
+                        <button type="reset" class="btn btn-outline-secondary">
+                            <i class="bi bi-eraser"></i> Clear Form
+                        </button>
+                        <div class="d-flex gap-2">
+                            <a href="/" class="btn btn-outline-light">
+                                <i class="bi bi-x-circle"></i> Cancel
+                            </a>
+                            <button type="submit" class="btn btn-primary btn-lg">
+                                <i class="bi bi-check-circle"></i> Add Exam
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        
+        <!-- Feature Info Card -->
+        <div class="card border-info mt-4">
+            <div class="card-header bg-info bg-opacity-25 border-info">
+                <h5 class="mb-0">
+                    <i class="bi bi-info-circle text-info"></i> About This Feature
+                </h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <h6>📋 Feature: Add Exams</h6>
+                        <ul class="mb-0">
+                            <li>Form-based interface (replaces CLI command)</li>
+                            <li>Input validation and error messages</li>
+                            <li>Visual priority selection</li>
+                            <li>Same data format as CLI version</li>
+                        </ul>
+                    </div>
+                    <div class="col-md-6">
+                        <h6>🔄 CLI Comparison</h6>
+                        <ul class="mb-0">
+                            <li><strong>CLI:</strong> <code>add_exam "Math Final" "2024-12-15"</code></li>
+                            <li><strong>Web:</strong> Form with validation</li>
+                            <li><strong>Data:</strong> Both use <code>data/exams.json</code></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- All Features Card -->
+        <div class="card border-success mt-3">
+            <div class="card-header bg-success bg-opacity-25 border-success">
+                <h5 class="mb-0">
+                    <i class="bi bi-list-check text-success"></i> All 5 Features Converted
+                </h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <ol class="mb-0">
+                            <li><strong>Add Exams</strong> - This form interface</li>
+                            <li><strong>Countdown Timer</strong> - Visual display (<a href="/countdown">View</a>)</li>
+                            <li><strong>Daily Study Suggestion</strong> - Dynamic generation</li>
+                            <li><strong>Progress Tracking</strong> - Percentage bars</li>
+                            <li><strong>Export to CSV</strong> - Download functionality (<a href="/export_csv">Test</a>)</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .priority-card {
+        cursor: pointer;
+        transition: all 0.3s;
+    }
+    
+    .priority-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    }
+    
+    .priority-card.active {
+        border-width: 3px;
+        background: rgba(var(--bs-primary-rgb), 0.1);
+    }
+    
+    .form-control-lg {
+        background-color: rgba(255, 255, 255, 0.05);
+        border: 2px solid #2d3748;
+        color: white;
+    }
+    
+    .form-control-lg:focus {
+        background-color: rgba(255, 255, 255, 0.1);
+        border-color: #4361ee;
+        box-shadow: 0 0 0 0.25rem rgba(67, 97, 238, 0.25);
+        color: white;
+    }
+</style>
+
+<script>
+    // Set minimum date to tomorrow
+    document.addEventListener('DOMContentLoaded', function() {
+        const dateInput = document.getElementById('examDate');
+        const tomorrow = new Date();
+        tomorrow.setDate(tomorrow.getDate() + 1);
+        
+        const yyyy = tomorrow.getFullYear();
+        const mm = String(tomorrow.getMonth() + 1).padStart(2, '0');
+        const dd = String(tomorrow.getDate()).padStart(2, '0');
+        
+        const minDate = `${yyyy}-${mm}-${dd}`;
+        dateInput.min = minDate;
+        dateInput.value = minDate;
+    });
+    
+    // Priority selection
+    function selectPriority(priority) {
+        // Remove active class from all cards
+        document.querySelectorAll('.priority-card').forEach(card => {
+            card.classList.remove('active');
+            card.classList.remove('border-primary');
+        });
+        
+        // Add active class to selected card
+        const selectedCard = document.querySelector(`[data-priority="${priority}"]`);
+        selectedCard.classList.add('active');
+        selectedCard.classList.add('border-primary');
+        
+        // Update hidden input
+        document.getElementById('priority').value = priority;
+    }
+    
+    // Form validation
+    (function () {
+        'use strict'
+        const forms = document.querySelectorAll('.needs-validation')
+        Array.from(forms).forEach(function (form) {
+            form.addEventListener('submit', function (event) {
+                if (!form.checkValidity()) {
+                    event.preventDefault()
+                    event.stopPropagation()
+                }
+                form.classList.add('was-validated')
+            }, false)
+        })
+    })()
+</script>
+{% endblock %}

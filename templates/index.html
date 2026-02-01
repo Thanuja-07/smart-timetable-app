@@ -1,0 +1,84 @@
+﻿{% extends "base.html" %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <h1 class="text-center mb-4">📅 Smart Timetable Dashboard</h1>
+        
+        <!-- Stats -->
+        <div class="row mb-4">
+            <div class="col-md-3">
+                <div class="card text-center p-3">
+                    <h3>{{ exams|length }}</h3>
+                    <p>Total Exams</p>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card text-center p-3">
+                    <h3>5</h3>
+                    <p>Core Features</p>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card text-center p-3">
+                    <h3>{{ github_stars }}+</h3>
+                    <p>GitHub Stars</p>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card text-center p-3">
+                    <h3>100%</h3>
+                    <p>CLI Compatible</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Exams Table -->
+        <div class="card p-3 mb-4">
+            <h3>Your Exams</h3>
+            {% if exams %}
+            <table class="table table-dark">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Date</th>
+                        <th>Subject</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for exam in exams %}
+                    <tr>
+                        <td>{{ exam.name }}</td>
+                        <td>{{ exam.date }}</td>
+                        <td>{{ exam.subject }}</td>
+                        <td>
+                            <a href="/delete/{{ exam.name }}" class="btn btn-sm btn-danger">Delete</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% else %}
+            <p class="text-center">No exams yet. <a href="/add_exam">Add your first exam!</a></p>
+            {% endif %}
+        </div>
+        
+        <!-- Features -->
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card p-3">
+                    <h4>🎯 Today's Study Suggestion</h4>
+                    <p>Focus on your nearest exam first. Review key concepts and practice problems.</p>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card p-3">
+                    <h4>📊 Progress Tracking</h4>
+                    <p>Track your study progress for each subject with percentage completion.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
