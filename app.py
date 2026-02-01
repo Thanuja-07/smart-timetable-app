@@ -248,7 +248,33 @@ class SmartTimetable:
         
         print(f"\n✓ Study plan exported to '{filename}'")
         print(f"📁 File saved in current directory")
-    
+    def delete_exam(self):
+     print("\n" + "="*50)
+     print("DELETE EXAM")
+     print("="*50)
+
+     with open(self.data_file, 'r') as f:
+        exams = json.load(f)
+
+     if not exams:
+        print("No exams to delete!")
+        return
+
+     for i, exam in enumerate(exams, 1):
+        print(f"{i}. {exam['subject']}")
+
+     try:
+        choice = int(input("\nEnter exam number to delete: ")) - 1
+        if 0 <= choice < len(exams):
+            removed = exams.pop(choice)
+
+            with open(self.data_file, 'w') as f:
+                json.dump(exams, f, indent=2)
+
+            print(f"\n✓ Deleted exam: {removed['subject']}")
+     except:
+        print("Invalid input!")
+
     def run(self):
         """Main application loop"""
         while True:
@@ -260,28 +286,30 @@ class SmartTimetable:
             print("3. Get Today's Study Suggestion")
             print("4. Track Progress")
             print("5. Export to CSV")
-            print("6. Exit")
+            print("6. Delete Exam")
+            print("7. Exit")
             print("="*50)
             
-            choice = input("\nEnter your choice (1-6): ").strip()
+            choice = input("\nEnter your choice (1-7): ").strip()
             
             if choice == '1':
-                self.add_exam()
+             self.add_exam()
             elif choice == '2':
-                self.show_countdown()
+             self.show_countdown()
             elif choice == '3':
-                self.get_daily_suggestion()
+             self.get_daily_suggestion()
             elif choice == '4':
-                self.track_progress()
+             self.track_progress()
             elif choice == '5':
-                self.export_to_csv()
+             self.export_to_csv()
             elif choice == '6':
-                print("\n👋 Goodbye! Happy studying!")
-                break
+             self.delete_exam()
+            elif choice == '7':
+             print("\n👋 Goodbye! Happy studying!")
+             break
             else:
-                print("Invalid choice! Please enter 1-6.")
-            
-            input("\nPress Enter to continue...")
+             print("Invalid choice! Please enter 1-7.")
+        input("\nPress Enter to continue...")
 
 if __name__ == "__main__":
     app = SmartTimetable()
