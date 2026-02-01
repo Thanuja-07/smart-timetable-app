@@ -248,7 +248,77 @@ class SmartTimetable:
         
         print(f"\n✓ Study plan exported to '{filename}'")
         print(f"📁 File saved in current directory")
+    def delete_exam(self):
+     print("\n" + "="*50)
+     print("DELETE EXAM")
+     print("="*50)
+
+     with open(self.data_file, 'r') as f:
+        exams = json.load(f)
+
+     if not exams:
+        print("No exams to delete!")
+        return
+
+     for i, exam in enumerate(exams, 1):
+        print(f"{i}. {exam['subject']}")
+
+     try:
+        choice = int(input("\nEnter exam number to delete: ")) - 1
+        if 0 <= choice < len(exams):
+            removed = exams.pop(choice)
+
+            with open(self.data_file, 'w') as f:
+                json.dump(exams, f, indent=2)
+
+            print(f"\n✓ Deleted exam: {removed['subject']}")
+     except:
+     
+        print("Invalid input!")
+
+    def todays_reminders(self):
     
+        print("\n" + "="*50)
+        print("📌 TODAY'S REMINDERS")
+        print("="*50)
+
+        with open(self.data_file, 'r') as f:
+            exams = json.load(f)
+
+        with open(self.progress_file, 'r') as f:
+            progress = json.load(f)
+
+        if not exams:
+            print("No exams added yet!")
+            return
+
+        today = date.today().isoformat()
+        reminders_found = False
+
+        for exam in exams:
+            days_left = self.calculate_days_left(exam['exam_date'])
+            if days_left > 0:
+                exam_id = exam['id']
+                completed = progress.get(exam_id, {}).get('completed_units', [])
+                total_units = exam['total_units']
+
+            # Determine which units to study today
+                units_per_day = max(1, total_units // max(1, days_left))
+                units_to_study = []
+
+                for unit in range(1, total_units + 1):
+                    if unit not in completed and len(units_to_study) < units_per_day:
+                       units_to_study.append(unit)
+
+                if units_to_study:
+                    reminders_found = True
+                    print(f"\n📚 {exam['subject']} (Exam in {days_left} days):")
+                    print(f"   ⏰ Study units today: {', '.join(map(str, units_to_study))}")
+                    print(f"   🕐 Daily study hours: {exam['daily_hours']}")
+
+        if not reminders_found:
+            print("✅ All exams completed or no study scheduled for today!")
+
     def run(self):
         """Main application loop"""
         while True:
@@ -260,28 +330,33 @@ class SmartTimetable:
             print("3. Get Today's Study Suggestion")
             print("4. Track Progress")
             print("5. Export to CSV")
-            print("6. Exit")
+            print("6. Delete Exam")
+            print("7. Today's Reminders")
+            print("8. Exit")
             print("="*50)
             
-            choice = input("\nEnter your choice (1-6): ").strip()
+            choice = input("\nEnter your choice (1-8): ").strip()
             
             if choice == '1':
-                self.add_exam()
+             self.add_exam()
             elif choice == '2':
-                self.show_countdown()
+             self.show_countdown()
             elif choice == '3':
-                self.get_daily_suggestion()
+             self.get_daily_suggestion()
             elif choice == '4':
-                self.track_progress()
+             self.track_progress()
             elif choice == '5':
-                self.export_to_csv()
+             self.export_to_csv()
             elif choice == '6':
-                print("\n👋 Goodbye! Happy studying!")
-                break
+             self.delete_exam()
+            elif choice == '7':
+             self.todays_reminders()
+            elif choice == '8':
+             print("\n👋 Goodbye! Happy studying!")
+             break
             else:
-                print("Invalid choice! Please enter 1-6.")
-            
-            input("\nPress Enter to continue...")
+             print("Invalid choice! Please enter 1-8.")
+        input("\nPress Enter to continue...")
 
 if __name__ == "__main__":
     app = SmartTimetable()
