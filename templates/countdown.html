@@ -1,0 +1,53 @@
+﻿{% extends "base.html" %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card p-4 text-center">
+            <h1 class="display-1">⏰</h1>
+            <h2>Countdown Timer</h2>
+            <p class="lead">Visual countdown to your next exam</p>
+            
+            <div class="mt-4 p-4 border rounded" style="background: #0d1117;">
+                <h3 class="text-warning">Next Exam: Mathematics Final</h3>
+                <h1 class="display-2 text-success mt-3">05:14:32</h1>
+                <p class="text-muted">Days:Hours:Minutes remaining</p>
+            </div>
+            
+            <div class="mt-4">
+                <h4>🎯 Priority Levels:</h4>
+                <div class="row mt-3">
+                    <div class="col">
+                        <span class="badge bg-danger p-2">High (≤ 7 days)</span>
+                    </div>
+                    <div class="col">
+                        <span class="badge bg-warning p-2">Medium (≤ 14 days)</span>
+                    </div>
+                    <div class="col">
+                        <span class="badge bg-success p-2">Low (> 14 days)</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card p-3 mt-3">
+            <h5>🔄 Switch Between Versions:</h5>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="card p-2 mb-2">
+                        <h6>🌐 Web Version</h6>
+                        <small>Run: python web_app.py</small>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card p-2 mb-2">
+                        <h6>💻 CLI Version</h6>
+                        <small>Run: python main.py (original)</small>
+                    </div>
+                </div>
+            </div>
+            <p class="mb-0 text-center">Both versions use the same JSON data files!</p>
+        </div>
+    </div>
+</div>
+{% endblock %}

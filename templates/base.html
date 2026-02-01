@@ -1,0 +1,191 @@
+﻿<!DOCTYPE html>
+<html lang="en" data-bs-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Timetable - {{ title if title else 'Dashboard' }}</title>
+    
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    
+    <style>
+        :root {
+            --primary-color: #4361ee;
+            --success-color: #2ecc71;
+            --warning-color: #f39c12;
+            --danger-color: #e74c3c;
+            --dark-bg: #121212;
+            --card-bg: #1e1e1e;
+        }
+        
+        body {
+            background: var(--dark-bg);
+            color: white;
+            min-height: 100vh;
+        }
+        
+        .navbar {
+            background: rgba(18, 18, 18, 0.95) !important;
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid #2d3748;
+        }
+        
+        .card {
+            background: var(--card-bg);
+            border: 1px solid #2d3748;
+            border-radius: 10px;
+            transition: transform 0.3s ease;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .github-stars {
+            background: linear-gradient(135deg, #4361ee 0%, #3a56d4 100%);
+            border: none;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container">
+            <!-- Brand with GitHub Stars -->
+            <a class="navbar-brand d-flex align-items-center" href="/">
+                <i class="bi bi-calendar-check-fill me-2" style="color: #4361ee;"></i>
+                <span class="fw-bold">Smart Timetable</span>
+                <span class="badge github-stars ms-2">
+                    <i class="bi bi-star-fill me-1"></i>40+ Stars
+                </span>
+            </a>
+            
+            <!-- Mobile toggle -->
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            
+            <!-- Navigation Links -->
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="/">
+                            <i class="bi bi-speedometer2 me-1"></i>Dashboard
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/add_exam">
+                            <i class="bi bi-plus-circle me-1"></i>Add Exam
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/countdown">
+                            <i class="bi bi-clock me-1"></i>Countdown
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/export_csv">
+                            <i class="bi bi-download me-1"></i>Export CSV
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/demo">
+                            <i class="bi bi-rocket-takeoff me-1"></i>Demo Data
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="container py-4">
+        <!-- Flash Messages -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category if category != 'error' else 'danger' }} alert-dismissible fade show">
+                        {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+        
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- Footer -->
+    <footer class="mt-5 py-3 border-top border-secondary text-center text-muted">
+        <div class="container">
+            <p class="mb-1">
+                <strong>Smart Timetable Web App</strong> • 
+                <a href="https://github.com/Thanuja-07/smart-timetable-app" target="_blank" class="text-decoration-none text-info">
+                    <i class="bi bi-github"></i> 40+ GitHub Stars
+                </a>
+            </p>
+            <small class="text-muted">
+                5 Core Features: Add Exams • Countdown Timer • Study Suggestions • Progress Tracking • Export CSV
+            </small>
+            <br>
+            <small class="text-muted">
+                Shares data with CLI version: <code>data/exams.json</code> and <code>data/progress.json</code>
+            </small>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Custom JS -->
+    <script>
+        // Update current time
+        function updateTime() {
+            const now = new Date();
+            const timeString = now.toLocaleTimeString('en-US', { 
+                hour: '2-digit', 
+                minute: '2-digit',
+                second: '2-digit'
+            });
+            const dateString = now.toLocaleDateString('en-US', {
+                weekday: 'short',
+                year: 'numeric',
+                month: 'short',
+                day: 'numeric'
+            });
+            
+            document.querySelectorAll('.current-time').forEach(el => {
+                el.textContent = timeString;
+            });
+            
+            document.querySelectorAll('.current-date').forEach(el => {
+                el.textContent = dateString;
+            });
+        }
+        
+        // Update every second
+        setInterval(updateTime, 1000);
+        updateTime(); // Initial call
+        
+        // Keyboard shortcuts
+        document.addEventListener('keydown', function(e) {
+            // Ctrl+N: Add exam
+            if (e.ctrlKey && e.key === 'n') {
+                e.preventDefault();
+                window.location.href = '/add_exam';
+            }
+            // Ctrl+E: Export
+            if (e.ctrlKey && e.key === 'e') {
+                e.preventDefault();
+                window.location.href = '/export_csv';
+            }
+            // Escape: Go home
+            if (e.key === 'Escape') {
+                window.location.href = '/';
+            }
+        });
+    </script>
+</body>
+</html>

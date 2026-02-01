@@ -1,14 +1,14 @@
 {
-  "20260129213347": {
-    "completed_units": [
-      1
-    ],
-    "last_updated": "2026-01-29"
+  "Mathematics": {
+    "completion": 75,
+    "last_updated": "2026-02-01"
   },
-  "20260129214315": {
-    "completed_units": [
-      1
-    ],
-    "last_updated": "2026-01-29"
+  "Physics": {
+    "completion": 50,
+    "last_updated": "2026-02-01"
+  },
+  "Chemistry": {
+    "completion": 30,
+    "last_updated": "2026-02-01"
   }
 }
