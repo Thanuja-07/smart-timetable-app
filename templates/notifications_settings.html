@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notification Settings - Smart Timetable</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .settings-card {
+            border-radius: 15px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            margin-top: 30px;
+        }
+        .notification-icon {
+            font-size: 2rem;
+            color: #0d6efd;
+            margin-bottom: 20px;
+        }
+        .form-check-input:checked {
+            background-color: #0d6efd;
+            border-color: #0d6efd;
+        }
+        .test-btn {
+            background: linear-gradient(45deg, #28a745, #20c997);
+            border: none;
+            transition: transform 0.3s;
+        }
+        .test-btn:hover {
+            transform: translateY(-2px);
+        }
+        .section-title {
+            color: #495057;
+            border-bottom: 2px solid #0d6efd;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+        .help-text {
+            font-size: 0.9rem;
+            color: #6c757d;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container">
+            <a class="navbar-brand" href="/dashboard">
+                <i class="fas fa-calendar-alt"></i> Smart Timetable
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/dashboard">
+                            <i class="fas fa-home"></i> Dashboard
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/schedule">
+                            <i class="fas fa-clock"></i> Schedule
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/task_priority">
+                            <i class="fas fa-tasks"></i> Task Priority
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="/notification_settings">
+                            <i class="fas fa-bell"></i> Notifications
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/profile">
+                            <i class="fas fa-user"></i> Profile
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/logout">
+                            <i class="fas fa-sign-out-alt"></i> Logout
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container">
+        <!-- Flash Messages -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ 'danger' if category == 'error' else 'success' }} alert-dismissible fade show mt-3">
+                        {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="card settings-card">
+                    <div class="card-header bg-white">
+                        <h3 class="mb-0 text-center">
+                            <i class="fas fa-bell notification-icon"></i><br>
+                            Notification Settings
+                        </h3>
+                    </div>
+                    <div class="card-body">
+                        <!-- Email Configuration Form -->
+                        <form method="POST" action="/notification_settings">
+                            <h4 class="section-title">Email Configuration</h4>
+                            
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label for="smtp_server" class="form-label">SMTP Server</label>
+                                    <input type="text" class="form-control" id="smtp_server" 
+                                           name="smtp_server" value="{{ config.smtp_server }}" required>
+                                    <div class="help-text">e.g., smtp.gmail.com</div>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="smtp_port" class="form-label">SMTP Port</label>
+                                    <input type="number" class="form-control" id="smtp_port" 
+                                           name="smtp_port" value="{{ config.smtp_port }}" required>
+                                    <div class="help-text">Typically 587 for TLS</div>
+                                </div>
+                            </div>
+                            
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label for="sender_email" class="form-label">Sender Email</label>
+                                    <input type="email" class="form-control" id="sender_email" 
+                                           name="sender_email" value="{{ config.sender_email }}" required>
+                                    <div class="help-text">Your email address</div>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="sender_password" class="form-label">App Password</label>
+                                    <input type="password" class="form-control" id="sender_password" 
+                                           name="sender_password" value="{{ config.sender_password }}" required>
+                                    <div class="help-text">Use app-specific password for Gmail</div>
+                                </div>
+                            </div>
+                            
+                            <div class="mb-4">
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input" type="checkbox" id="notification_enabled" 
+                                           name="notification_enabled" value="true" 
+                                           {{ 'checked' if config.notification_enabled else '' }}>
+                                    <label class="form-check-label" for="notification_enabled">
+                                        <strong>Enable Email Notifications</strong>
+                                    </label>
+                                </div>
+                            </div>
+                            
+                            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                                <a href="/dashboard" class="btn btn-secondary me-md-2">
+                                    <i class="fas fa-arrow-left"></i> Back to Dashboard
+                                </a>
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="fas fa-save"></i> Save Settings
+                                </button>
+                            </div>
+                        </form>
+                        
+                        <hr class="my-4">
+                        
+                        <!-- Test Notification Section -->
+                        <div class="text-center">
+                            <h4 class="section-title">Test Notification</h4>
+                            <p class="mb-4">Send a test email to verify your configuration:</p>
+                            <a href="/send_test_email" class="btn test-btn btn-lg">
+                                <i class="fas fa-paper-plane"></i> Send Test Email
+                            </a>
+                            
+                            <div class="mt-3">
+                                <a href="/check_upcoming" class="btn btn-outline-info">
+                                    <i class="fas fa-sync"></i> Check & Send Upcoming Notifications
+                                </a>
+                            </div>
+                        </div>
+                        
+                        <hr class="my-4">
+                        
+                        <!-- Notification Information -->
+                        <div class="mt-4">
+                            <h5><i class="fas fa-info-circle text-info"></i> How to Set Up</h5>
+                            <div class="alert alert-info">
+                                <h6>For Gmail Users:</h6>
+                                <ol>
+                                    <li>Go to your Google Account settings</li>
+                                    <li>Enable 2-factor authentication</li>
+                                    <li>Generate an "App Password"</li>
+                                    <li>Use that app password in the form above</li>
+                                    <li>Click "Send Test Email" to verify</li>
+                                </ol>
+                                <p class="mb-0"><strong>Note:</strong> Notifications are sent for:
+                                    <ul class="mb-0">
+                                        <li>Upcoming classes (24 hours before)</li>
+                                        <li>Task deadlines (24 hours before)</li>
+                                    </ul>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-light mt-5 py-3">
+        <div class="container text-center">
+            <p class="mb-0 text-muted">
+                <i class="fas fa-calendar-alt"></i> Smart Timetable App &copy; 2024
+            </p>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Show password toggle
+        document.addEventListener('DOMContentLoaded', function() {
+            const passwordField = document.getElementById('sender_password');
+            const toggleBtn = document.createElement('button');
+            toggleBtn.type = 'button';
+            toggleBtn.className = 'btn btn-outline-secondary btn-sm';
+            toggleBtn.innerHTML = '<i class="fas fa-eye"></i>';
+            toggleBtn.style.position = 'absolute';
+            toggleBtn.style.right = '10px';
+            toggleBtn.style.top = '50%';
+            toggleBtn.style.transform = 'translateY(-50%)';
+            
+            const parentDiv = passwordField.parentElement;
+            parentDiv.style.position = 'relative';
+            parentDiv.appendChild(toggleBtn);
+            
+            toggleBtn.addEventListener('click', function() {
+                const type = passwordField.getAttribute('type') === 'password' ? 'text' : 'password';
+                passwordField.setAttribute('type', type);
+                this.innerHTML = type === 'password' ? '<i class="fas fa-eye"></i>' : '<i class="fas fa-eye-slash"></i>';
+            });
+        });
+    </script>
+</body>
+</html>
