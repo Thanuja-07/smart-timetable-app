@@ -42,3 +42,8 @@ git clone https://github.com/yourusername/smart-timetable-app.git
 cd smart-timetable-app
 
 # No installation required! Python has all built-in modules
+## Features
+- Smart timetable management
+- Easy schedule organization
+- User-friendly interface
+- Time management support
