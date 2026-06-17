@@ -10,6 +10,18 @@ A simple yet powerful timetable application that helps you plan your study sched
 4. **Progress Tracking** - Track completion percentage for each subject
 5. **Export to CSV** - Export your study plan for offline use
 
+##  Future Improvements
+
+- Add GUI dashboard with charts for better visualization  
+- Include notifications and reminders for daily study tasks  
+- Develop an AI-based smart study planner  
+- Create a mobile application version  
+- Enable cloud sync for accessing timetable across devices  
+
+
+
+
+
 ## 📸 Screenshots
 
 ### 1. Main Menu
@@ -47,3 +59,12 @@ cd smart-timetable-app
 - Easy schedule organization
 - User-friendly interface
 - Time management support
+
+
+
+
+
+
+
+
+
